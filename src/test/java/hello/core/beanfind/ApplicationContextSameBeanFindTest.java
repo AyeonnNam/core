@@ -5,10 +5,13 @@ import hello.core.Member.MemoryMemberRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
+import org.springframework.boot.convert.DurationUnit;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.testng.annotations.Test;
+
+import java.util.Map;
 
 public class ApplicationContextSameBeanFindTest {
 
@@ -30,6 +33,15 @@ public class ApplicationContextSameBeanFindTest {
         org.assertj.core.api.Assertions.assertThat(memberRepository1).isInstanceOf(MemberRepository.class);
     }
 
+    @Test
+    @DisplayName("특정 타입을 모두 조회하기")
+    void findAllType(){
+        Map<String, MemberRepository> beansOfType = ac.getBeansOfType(MemberRepository.class);
+        for (String key : beansOfType.keySet()) {
+            System.out.println("key = " + key + ", value = " + beansOfType.get(key));
+        }
+
+    }
 
     @Configuration
     static class SameBeanConfig {
