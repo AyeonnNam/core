@@ -12,6 +12,8 @@ import hello.core.order.OrderServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+
+//순수 자바 코드에서 스프링으로 전환하기
 @Configuration
 public class AppConfig {
 
