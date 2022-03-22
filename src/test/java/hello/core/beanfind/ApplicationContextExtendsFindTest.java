@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.testng.annotations.Test;
 
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,6 +34,35 @@ public class ApplicationContextExtendsFindTest {
         DiscountPolicy bean = AC.getBean("rateDiscountPolicy", DiscountPolicy.class);
 
         assertThat(bean).isInstanceOf(RateDiscountPolicy.class);
+    }
+
+    @Test
+    @DisplayName("특정 하위 타입으로 조회")
+    void findBeanBySubType(){
+        RateDiscountPolicy bean = AC.getBean(RateDiscountPolicy.class);
+        assertThat(bean).isInstanceOf(RateDiscountPolicy.class);
+    }
+
+    @Test
+    @DisplayName("부모 타입으로 모두 조회하기")
+    void findAllBeanByParentType(){
+        Map<String, DiscountPolicy> beansOfType = AC.getBeansOfType(DiscountPolicy.class);
+        assertThat(beansOfType.size()).isEqualTo(2);
+
+        for (String key : beansOfType.keySet()) {
+            DiscountPolicy discountPolicy = beansOfType.get(key);
+            System.out.println("key = " + key + ", value = " + discountPolicy);
+
+        }
+    }
+
+    @Test
+    @DisplayName("부모 타입으로 모두 조회하기 - object")
+    void findAllBeanObjectType(){
+        Map<String, Object> beansOfType = AC.getBeansOfType(Object.class);
+        for (String key : beansOfType.keySet()) {
+            System.out.println("key = " + key + "value = " + beansOfType.get(key));
+        }
     }
 
 
