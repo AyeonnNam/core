@@ -8,35 +8,36 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 public class ApplicationContextInfoTest {
 
-    AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
 
-    @Test
-    @DisplayName("모든 빈 출력하기")
-    void findAllBean(){
-        String[] beanDefinitionNames = ac.getBeanDefinitionNames();
-        for (String beanDefinitionName : beanDefinitionNames) {
-            Object bean = ac.getBean(beanDefinitionName);
-            System.out.println("object = " + bean + ", name = " + beanDefinitionName);
-        }
+       AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
+
+       @Test
+        @DisplayName("모든 빈 출력하기")
+        void findAllBean(){
+               String[] beanDefinitionNames = ac.getBeanDefinitionNames();
+               for (String beanDefinitionName : beanDefinitionNames) {
+                       Object bean = ac.getBean(beanDefinitionName);
+                       System.out.println("object = " + bean + ", name = " + beanDefinitionName);
+               }
+
+       }
+
+       @Test
+        @DisplayName("어플리케이션 빈 출력하기")
+        void findApplicationBean(){
+           String[] beanDefinitionNames = ac.getBeanDefinitionNames();
+           for (String beanDefinitionName : beanDefinitionNames) {
+               BeanDefinition beanDefinition = ac.getBeanDefinition(beanDefinitionName);
+               if(beanDefinition.getRole() == beanDefinition.ROLE_APPLICATION) {
+                   Object bean = ac.getBean(beanDefinitionName);
+                   System.out.println("object = " + bean + ", name= " + beanDefinitionName);
+
+               }
+
+           }
 
 
-    }
 
-    @Test
-    @DisplayName("에플리케이션 빈 출력하기")
-    void findApplicationBean(){
-        String[] beanDefinitionNames = ac.getBeanDefinitionNames();
-        for (String beanDefinitionName : beanDefinitionNames) {
-            BeanDefinition beanDefinition = ac.getBeanDefinition(beanDefinitionName);
-        if(beanDefinition.getRole() == BeanDefinition.ROLE_APPLICATION) {
-            Object bean = ac.getBean(beanDefinitionName); //객체
-            System.out.println("object = " + bean + ", name = " + beanDefinitionName);
-        }
+       }
 
-
-        }
-
-
-
-    }
 }
