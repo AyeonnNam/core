@@ -10,10 +10,13 @@ import org.springframework.stereotype.Component;
 public class OrderServiceImpl implements OrderService{
 
 
-
-    private final MemberRepository memberRepository;
+    private  final MemberRepository memberRepository;
     //private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
-    private final DiscountPolicy discountPolicy;
+    private  final DiscountPolicy discountPolicy;
+
+
+
+
 
     @Autowired //생성자가 하나일때는 Autowired 어노테이션없이 spring container가 자동으로 의존관계 등록함.
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
