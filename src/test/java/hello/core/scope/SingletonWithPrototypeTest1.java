@@ -2,11 +2,14 @@ package hello.core.scope;
 
 import ch.qos.logback.core.net.server.Client;
 import org.assertj.core.api.Assertions;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.testng.annotations.Test;
 
 import javax.annotation.PreDestroy;
+import javax.inject.Provider;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -30,7 +33,8 @@ public class SingletonWithPrototypeTest1 {
     @Test
     void singletonClientUsePrototype(){
 
-        AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(PrototypeBean.class, ClientBean.class);
+        AnnotationConfigApplicationContext ac =
+                new AnnotationConfigApplicationContext(PrototypeBean.class, ClientBean.class);
 
         ClientBean clientBean1 = ac.getBean(ClientBean.class);
         int count1 = clientBean1.logic();
@@ -38,7 +42,7 @@ public class SingletonWithPrototypeTest1 {
 
         ClientBean clientBean2 = ac.getBean(ClientBean.class);
         int count2 = clientBean2.logic();
-        assertThat(count2).isEqualTo(2);
+        assertThat(count2).isEqualTo(1);
 
 
     }
@@ -46,14 +50,13 @@ public class SingletonWithPrototypeTest1 {
     @Scope("singleton")
     static class ClientBean{
 
-        private final PrototypeBean prototypeBean;
+        private  PrototypeBean prototypeBean;
 
-
-        ClientBean(PrototypeBean prototypeBean) {
-            this.prototypeBean = prototypeBean;
-        }
+            @Autowired
+            private Provider<PrototypeBean> prototypeBeanProvider;
 
         public int logic(){
+            PrototypeBean prototypeBean = prototypeBeanProvider.get();
             prototypeBean.addCount();
             int count = prototypeBean.getCount();
             return count;
